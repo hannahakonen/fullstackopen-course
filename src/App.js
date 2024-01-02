@@ -1,65 +1,53 @@
-import Course from './components/Course'
+import { useState } from 'react'
 
-const Courses = ({ courses }) => {
+const Person = ({ person }) => {
   return (
-    <div>
-      {courses.map(course => <Course key={course.id} course={course} />)}
-    </div>
+    <p>{person.name}</p>
   )
-}
+} 
 
 const App = () => {
-  const courses = [
-    {
-      name: 'Half Stack application development',
-      id: 1,
-      parts: [
-        {
-          name: 'Fundamentals of React',
-          exercises: 10,
-          id: 1
-        },
-        {
-          name: 'Using props to pass data',
-          exercises: 7,
-          id: 2
-        },
-        {
-          name: 'State of a component',
-          exercises: 14,
-          id: 3
-        },
-        {
-          name: 'Redux',
-          exercises: 11,
-          id: 4
-        }
-      ]
-    }, 
-    {
-      name: 'Node.js',
-      id: 2,
-      parts: [
-        {
-          name: 'Routing',
-          exercises: 3,
-          id: 1
-        },
-        {
-          name: 'Middlewares',
-          exercises: 7,
-          id: 2
-        }
-      ]
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas',
+      id: 1 }
+  ]) 
+  const [newName, setNewName] = useState('')
+
+  const addPerson = (event) => {
+    event.preventDefault()
+    const personObject = {
+      name: newName,
+      id: persons.length + 1
     }
-  ]
+    setPersons(persons.concat(personObject))
+    setNewName('')
+  }
+
+  const handlePersonChange = (event) => {
+    setNewName(event.target.value)
+  }
 
   return (
     <div>
-      <h1>Web development curriculum</h1>
-      <Courses courses={courses} />
+      <h2>Phonebook</h2>
+      <form onSubmit={addPerson}>
+        <div>
+          name: 
+          <input value={newName} onChange={handlePersonChange} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+      <h2>Numbers</h2>
+      <div>
+        {persons.map(person => 
+          <Person key={person.id} person={person} />
+        )}
+      </div>
     </div>
   )
+
 }
 
 export default App
